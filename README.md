@@ -1,86 +1,90 @@
-keerthi-valipollu
-jobform-automator-ai-customer-support
-Public
-Go to file
-t
-T
-keerthi-valipollu
-keerthi-valipollu
-Initial commit
-1bb496f
- · 
-2 hours ago
-Name		
-app
-Initial commit
-2 hours ago
-lib
-Initial commit
-2 hours ago
-public
-Initial commit
-2 hours ago
-.gitignore
-Initial commit
-2 hours ago
-AGENTS.md
-Initial commit
-2 hours ago
-CLAUDE.md
-Initial commit
-2 hours ago
-README.md
-Initial commit
-2 hours ago
-eslint.config.mjs
-Initial commit
-2 hours ago
-next-env.d.ts
-Initial commit
-2 hours ago
-next.config.ts
-Initial commit
-2 hours ago
-package-lock.json
-Initial commit
-2 hours ago
-package.json
-Initial commit
-2 hours ago
-postcss.config.mjs
-Initial commit
-2 hours ago
-tsconfig.json
-Initial commit
-2 hours ago
-Repository files navigation
-README
-This is a Next.js project bootstrapped with create-next-app.
+# AI Customer Support Agent
 
-Getting Started
-First, run the development server:
+## Jobform Automator — Next.js Developer Assignment
 
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-Open http://localhost:3000 with your browser to see the result.
+A customer support web application for handling e-commerce refund requests using Next.js, mock CRM data, refund policy validation, and an AI response layer.
 
-You can start editing the page by modifying app/page.tsx. The page auto-updates as you edit the file.
+## Overview
 
-This project uses next/font to automatically optimize and load Geist, a new font family for Vercel.
+This application allows customers to submit refund requests using their Order ID. The system checks the order against customer CRM data and validates the refund request using a strict refund policy.
 
-Learn More
-To learn more about Next.js, take a look at the following resources:
+The application has two main sections:
 
-Next.js Documentation - learn about Next.js features and API.
-Learn Next.js - an interactive Next.js tutorial.
-You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
+* **Customer Support** — Submit refund requests and receive the decision.
+* **Admin Dashboard** — View agent activity and processing status.
 
-Deploy on Vercel
-The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
+## Features
 
-Check out our Next.js deployment documentation for more details.
+* Next.js App Router application
+* Customer support chat interface
+* Mock CRM database with 15 customer profiles
+* Strict 7-day refund policy
+* Refund eligibility validation
+* Order existence validation
+* Refund reason validation
+* AI customer response layer
+* Fallback response when the AI service is unavailable
+* Admin activity and processing status logs
+* Handles approved, denied, and unknown-order requests
+
+## Refund Policy
+
+The application follows these rules:
+
+1. Refund requests must be made within 7 days of delivery.
+2. The order must exist in the CRM database.
+3. The product must be eligible for return.
+4. A valid refund reason must be provided.
+5. Requests after 7 days are denied.
+6. Orders that cannot be found are never approved.
+7. Changed-my-mind requests are not eligible.
+8. The application checks the refund policy before approving a refund.
+
+## Architecture
+
+```text
+Customer
+   ↓
+Customer Support UI
+   ↓
+POST /api/refund
+   ↓
+Refund Agent
+   ↓
+CRM + Refund Policy Tool
+   ↓
+Refund Eligibility Decision
+   ↓
+AI Customer Response
+   ↓
+Customer + Admin Dashboard
+```
+
+## Project Structure
+
+```text
+app/
+├── api/
+│   └── refund/
+│       └── route.ts
+└── page.tsx
+
+lib/
+├── aiAgent.ts
+├── mockData.ts
+├── refundPolicy.ts
+└── refundTools.ts
+```
+
+### Main Files
+
+* `app/page.tsx` — Customer chat interface and Admin Dashboard
+* `app/api/refund/route.ts` — Refund API endpoint
+* `lib/mockData.ts` — Mock CRM customer data
+* `lib/refundPolicy.ts` — Refund policy rules
+* `lib/refundTools.ts` — Refund eligibility validation
+* `lib/aiAgent.ts` — AI response layer
+
+## Example Test Cases
+
+### 1. Valid Ref
