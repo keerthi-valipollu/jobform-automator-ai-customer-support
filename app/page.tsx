@@ -25,6 +25,7 @@ export default function Home() {
 
     const userMessage = message.trim();
     setAgentStatus("Processing");
+
     setActivities((previous) => [
       ...previous,
       { text: `Customer request received: ${userMessage}` },
@@ -53,7 +54,9 @@ export default function Home() {
           text: "Please provide your Order ID, for example ORD1001.",
         },
       ]);
+
       setLoading(false);
+      setAgentStatus("Completed");
       return;
     }
 
@@ -71,16 +74,27 @@ export default function Home() {
 
       const result = await response.json();
 
-     setActivities((previous) => [
-  ...previous,
-  {
-    text: result.eligible
-      ? "Refund policy check passed."
-      : `Refund policy check failed: ${
-          result.reason || result.message || "Unable to complete policy check."
-        }`,
-  },
-]);
+      setActivities((previous) => [
+        ...previous,
+        {
+          text: `Agent tool called: ${
+            result.toolUsed || "check_refund_eligibility"
+          }`,
+        },
+      ]);
+
+      setActivities((previous) => [
+        ...previous,
+        {
+          text: result.eligible
+            ? "Refund policy check passed."
+            : `Refund policy check failed: ${
+                result.reason ||
+                result.message ||
+                "Unable to complete policy check."
+              }`,
+        },
+      ]);
 
       setMessages((previous) => [
         ...previous,
@@ -109,10 +123,10 @@ export default function Home() {
           text: "Sorry, something went wrong while checking the refund.",
         },
       ]);
-   } finally {
-  setLoading(false);
-  setAgentStatus("Completed");
-}
+    } finally {
+      setLoading(false);
+      setAgentStatus("Completed");
+    }
   }
 
   return (
@@ -191,12 +205,15 @@ export default function Home() {
 
             <div className="mt-4 rounded-lg bg-gray-50 p-4">
               <p className="font-medium">Agent Activity</p>
-               <p className="mt-1 text-xs text-green-600">
-  ● System active
-</p>
-<p className="mt-2 text-sm font-medium">
-  Status: {agentStatus}
-</p>
+
+              <p className="mt-1 text-xs text-green-600">
+                ● System active
+              </p>
+
+              <p className="mt-2 text-sm font-medium">
+                Status: {agentStatus}
+              </p>
+
               <div className="mt-3 space-y-2 text-sm text-gray-600">
                 {activities.length === 0 ? (
                   <p>Waiting for customer request...</p>
